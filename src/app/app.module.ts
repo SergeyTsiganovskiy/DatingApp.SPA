@@ -1,3 +1,4 @@
+import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -5,16 +6,19 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
    declarations: [
       AppComponent,
-      ValueComponent
+      ValueComponent,
+      NavComponent
    ],
    imports: [
-      BrowserModule, 
+      BrowserModule,
       AppRoutingModule,
-      HttpModule
+      HttpModule,
+      FormsModule 
    ],
    providers: [],
    bootstrap: [
