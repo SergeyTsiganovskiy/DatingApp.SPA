@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { User } from '../_models/User';
 import { Http , Headers, RequestOptions} from '@angular/http';
+import { AuthHttp } from '../../../node_modules/angular2-jwt';
 
 
 @Injectable({
@@ -11,21 +12,12 @@ import { Http , Headers, RequestOptions} from '@angular/http';
 export class UserService {
   baseUrl = environment.apiUrl;
 
-  constructor(private http: Http) { }
+  constructor(private authHttp: AuthHttp) { }
 
   getUsers(): Observable<User[]>{
-    return this.http.get(this.baseUrl + 'users', this.jwt())
+    return this.authHttp.get(this.baseUrl + 'users')
     .map(response => <User[]>response.json())
     .catch(this.handleError);
-  }
-
-  private jwt(){
-    let token = localStorage.getItem('token');
-    if (token){
-      let headers = new Headers({'Authorization': 'Bearer ' + token});
-      headers.append('Content-type', 'application/json');
-      return new RequestOptions({headers: headers});
-    }
   }
 
   private handleError(error: any){

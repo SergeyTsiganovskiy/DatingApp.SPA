@@ -19,6 +19,7 @@ import { ListsComponent } from './lists/lists.component';
 import { AuthGuard } from './_guard/auth.guard';
 import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
+import { AuthModule } from './auth/auth.module';
 
 
 
@@ -39,7 +40,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
       HttpModule,
       FormsModule,
       BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      AuthModule
    ],
    providers: [
       AuthService,
