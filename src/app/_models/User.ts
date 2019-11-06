@@ -9,7 +9,7 @@ export interface User {
     created: Date;
     lastActive: Date;
     photoUrl: string;
-    cite: string;
+    city: string;
     country: string;
     interests?: string;
     introduction?: string;
