@@ -14,11 +14,18 @@ export class UserService {
 
   constructor(private authHttp: AuthHttp) { }
 
-  getUsers(): Observable<User[]>{
+   getUsers(): Observable<User[]>{
     return this.authHttp.get(this.baseUrl + 'users')
     .map(response => <User[]>response.json())
     .catch(this.handleError);
   }
+
+   getUser(id): Observable<User>{
+     return this.authHttp
+        .get(this.baseUrl + 'users/' + id)
+        .map(r => <User>r.json())
+        .catch(this.handleError);
+   }
 
   private handleError(error: any){
     const applicationError = error.headers.get('Application-Error');

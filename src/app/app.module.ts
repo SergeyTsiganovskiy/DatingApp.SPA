@@ -20,6 +20,7 @@ import { AuthGuard } from './_guard/auth.guard';
 import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { AuthModule } from './auth/auth.module';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 
 
 
@@ -32,7 +33,8 @@ import { AuthModule } from './auth/auth.module';
       MemberListComponent,
       MessagesComponent,
       ListsComponent,
-      MemberCardComponent
+      MemberCardComponent,
+      MemberDetailComponent
    ],
    imports: [
       BrowserModule,

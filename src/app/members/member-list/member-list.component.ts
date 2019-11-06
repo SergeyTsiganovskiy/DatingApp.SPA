@@ -4,8 +4,9 @@ import { UserService } from '../../_services/user.service';
 import { AlertifyService } from '../../_services/alertify.service';
 
 @Component({
-	selector: 'member-list',
-	templateUrl: 'member-list.component.html'
+	selector: 'app-member-list',
+	templateUrl: './member-list.component.html',
+	styleUrls: ['./member-list.component.css']
 })
 
 export class MemberListComponent implements OnInit {
