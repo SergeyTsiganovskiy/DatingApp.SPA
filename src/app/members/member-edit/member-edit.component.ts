@@ -17,7 +17,10 @@ export class MemberEditComponent implements OnInit {
 
   @ViewChild('editForm', {static: true}) editForm: NgForm;
 
-  constructor(private route: ActivatedRoute, private alertify: AlertifyService) { }
+  constructor(private route: ActivatedRoute, 
+    private alertify: AlertifyService, 
+    private userService: UserService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -26,8 +29,11 @@ export class MemberEditComponent implements OnInit {
   }
 
   updateUser(){
-     console.log(this.user);
-     this.alertify.success('Profile updated successfully');
-     this.editForm.reset(this.user);
+     this.userService.updateUser(this.authService.decodedToken.nameid, this.user).subscribe(next => {
+      this.alertify.success('Profile updated successfully');
+      this.editForm.reset(this.user);
+     }, error => {
+       this.alertify.error(error);
+     })
   }
 }
