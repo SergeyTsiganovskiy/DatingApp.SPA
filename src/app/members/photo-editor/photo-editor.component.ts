@@ -1,10 +1,13 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output } from '@angular/core';
 import { Photo } from 'src/app/_models/Photo';
 import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/_services/auth.service';
 import { UserService } from 'src/app/_services/user.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
+import * as _ from 'underscore';
+import { EventEmitter } from '@angular/core';
+import { TabHeadingDirective } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-photo-editor',
@@ -16,6 +19,8 @@ export class PhotoEditorComponent implements OnInit {
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
+  currentMain: Photo;
+  @Output() getMemberPhotoChange = new EventEmitter();
 
   constructor(private authService: AuthService, private userService: UserService, private alertify: AlertifyService) { }
 
@@ -55,10 +60,23 @@ export class PhotoEditorComponent implements OnInit {
 
   setMainPhoto(photo: Photo){
     this.userService.setMainPhoto(this.authService.decodedToken.nameid, photo.id).subscribe(() => {
-      console.log('Okey');
+      this.currentMain = _.findWhere(this.photos, {isMain: true});
+      this.currentMain.isMain = false;
+      photo.isMain = true;
+      this.authService.changeMemberPhoto(photo.url); 
     }, error => {
       this.alertify.error(error);
     })
   }
-
+ 
+  deletePhoto(id: number){
+    this.alertify.confirm('Are you sure you want to delete this photo?', () =>{
+      this.userService.deletePhoto(this.authService.decodedToken.nameid, id).subscribe(() => {
+        this.photos.splice(_.findIndex(this.photos, {id : id}), 1);
+        this.alertify.success('Photo has been deleted');
+      }, error => {
+        this.alertify.error('Failed to delete phote');
+      })
+    })
+  }
 }
