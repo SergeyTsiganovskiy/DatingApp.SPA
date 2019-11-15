@@ -23,7 +23,7 @@ export class UserService {
    getUser(id): Observable<User>{
      return this.authHttp
         .get(this.baseUrl + 'users/' + id)
-        .map(r => <User>r.json())
+        .map(r => <User>r.json())     
         .catch(this.handleError);
    }
 
