@@ -15,7 +15,7 @@ pageNumber = 1;
     resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
         return this.userService.getUsers(this.pageNumber, this.pageSize).catch(error => {
             this.alertify.error('Problem retrieving data');
-            this.router.navigate(['/home']);
+            this.router.navigate(['/members']);
             return Observable.of(null);
         })
     }

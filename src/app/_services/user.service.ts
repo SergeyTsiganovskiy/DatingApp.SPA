@@ -5,6 +5,7 @@ import { User } from '../_models/User';
 import { Http , Headers, RequestOptions, Response} from '@angular/http';
 import { AuthHttp } from '../../../node_modules/angular2-jwt';
 import { PaginatedResult } from '../_models/pagination';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 
 @Injectable({
@@ -78,6 +79,26 @@ export class UserService {
 
    sendLike(id:number, recipientId: number){
       return this.authHttp.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {}).catch(this.handleError);
+   }
+
+   getMessages(id: number, page?: number, itemsPerPage?: number, messageContainer?: string){
+      const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+      let queryString = '?MessageContainer=' + messageContainer;
+
+      if (page != null && itemsPerPage != null) {
+        queryString += '&pageNumber=' + page + '&pageSize=' + itemsPerPage;
+      }
+
+      return this.authHttp.get(this.baseUrl + 'users/' + id + '/messages' + queryString)
+        .map((response: Response) => {
+          paginatedResult.result = response.json();
+
+          if(response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+
+          return paginatedResult;
+        }).catch(this.handleError);
    }
 
   private handleError(error: any){
