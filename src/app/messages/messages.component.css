@@ -1,3 +1,11 @@
-.messages {
-
+table {
+    margin-top: 15px;
 }
+
+.img-circle {
+    max-height: 50px;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle;
+} 

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Pagination, PaginatedResult } from '../_models/pagination';
 import { AuthService } from '../_services/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { AlertifyService } from '../_services/alertify.service';
 import { UserService } from '../_services/user.service';
+import { Message } from '../_models/message';
 
 @Component({
 	selector: 'messages',
@@ -25,11 +25,11 @@ export class MessagesComponent implements OnInit {
 	ngOnInit() { 
 		this.route.data.subscribe(data => {
 			this.messages = data['messages'].result;
-			this.pagination = data['messages'].paginatin;
+			this.pagination = data['messages'].pagination;
 		}) 
 	}
 
-	loadMessages(){
+	loadMessages() {
 		this.userService
 			.getMessages(this.authService.decodedToken.nameid, this.pagination.currentPage,
 				this.pagination.itemsPerPage, this.messageContainer )

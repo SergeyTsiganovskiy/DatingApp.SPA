@@ -5,7 +5,8 @@ import { User } from '../_models/User';
 import { Http , Headers, RequestOptions, Response} from '@angular/http';
 import { AuthHttp } from '../../../node_modules/angular2-jwt';
 import { PaginatedResult } from '../_models/pagination';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { Message } from '../_models/message';
+
 
 
 @Injectable({
@@ -99,6 +100,12 @@ export class UserService {
 
           return paginatedResult;
         }).catch(this.handleError);
+   }
+
+   getMessageThread(id: number, recipientId: number){
+     return this.authHttp.get(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId).map((response: Response) => {
+       return response.json();
+     }).catch(this.handleError); 
    }
 
   private handleError(error: any){
