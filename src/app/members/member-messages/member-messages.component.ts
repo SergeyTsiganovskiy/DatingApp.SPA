@@ -3,6 +3,7 @@ import { Message } from 'src/app/_models/message';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { UserService } from 'src/app/_services/user.service';
 import { AuthService } from 'src/app/_services/auth.service';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'app-member-messages',
@@ -10,20 +11,43 @@ import { AuthService } from 'src/app/_services/auth.service';
   styleUrls: ['./member-messages.component.css']
 })
 export class MemberMessagesComponent implements OnInit {
-@Input() userId: number;
-messages: Message[];
+  @Input() userId: number;
+  messages: Message[];
+  newMessage: any = {};
 
-constructor(private userService: UserService, private authService: AuthService, private alertify: AlertifyService) { }
+
+  constructor(private userService: UserService, private authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.loadMessages();
   }
 
-  loadMessages(){
-    this.userService.getMessageThread(this.authService.decodedToken.nameid, this.userId).subscribe(messages => {
+  loadMessages() {
+    const currentUserId = +this.authService.decodedToken.nameid;
+    this.userService.getMessageThread(this.authService.decodedToken.nameid, this.userId)
+    .do(messages => {
+        _.each(messages, (message: Message) => {
+          if (message.isRead === false && message.recipientId === currentUserId){
+            this.userService.markAsRead(currentUserId, message.id);
+          }
+        })
+    }) 
+    .subscribe(messages => {
       this.messages = messages;
     }, error => {
       this.alertify.error(error);
     });
   }
+
+  sendMessage() {
+    this.newMessage.recipientId = this.userId;
+    this.userService.sendMessage(this.authService.decodedToken.nameid, this.newMessage).subscribe(message => {
+      this.messages.unshift(message);
+      debugger;
+      this.newMessage.content = '';
+    }, error => {
+      this.alertify.error(error);
+    })
+  }
+
 }
