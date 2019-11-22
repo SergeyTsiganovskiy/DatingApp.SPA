@@ -5,12 +5,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { tokenNotExpired, JwtHelper } from 'angular2-jwt'
 import { User } from '../_models/User';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  baseUrl = 'http://localhost:5000/api/auth/';
+  baseUrl = environment.apiUrl;
   userToken: any;
   decodedToken: any;
   currentUser: User;
@@ -25,7 +26,7 @@ export class AuthService {
   }
 
   login(model: any){
-    return this.http.post(this.baseUrl + 'login', model, this.requestOptions()).map((response: Response) => {
+    return this.http.post(this.baseUrl + 'auth/login', model, this.requestOptions()).map((response: Response) => {
       const user = response.json();
       if (user){
         localStorage.setItem('token', user.tokenString);
@@ -44,7 +45,7 @@ export class AuthService {
   }
 
   register(user: User){
-    return this.http.post(this.baseUrl + 'register', user, this.requestOptions()).catch(this.handleError);
+    return this.http.post(this.baseUrl + 'auth/register', user, this.requestOptions()).catch(this.handleError);
   }
 
   loggedIn(){

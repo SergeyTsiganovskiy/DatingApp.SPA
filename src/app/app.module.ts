@@ -15,7 +15,6 @@ import { appRoutes } from './routes';
 import { RouterModule } from '@angular/router';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { MessagesComponent } from './messages/messages.component';
-import { ListsComponent } from './lists/lists.component';
 import { AuthGuard } from './_guard/auth.guard';
 import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
@@ -35,24 +34,27 @@ import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/message.resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
+import { AuthComponent } from './auth/auth.component';
+import { ListsComponent } from './lists/lists.component';
+
 @NgModule({
    declarations: [
+      AuthComponent,
       AppComponent,
       NavComponent,
       HomeComponent,
       RegisterComponent,
       MemberListComponent,
       MessagesComponent,
-      ListsComponent,
       MemberCardComponent,
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
       TimeAgoPipe,
+      ListsComponent,
       MemberMessagesComponent
    ],
    imports: [
-      BrowserModule,
       AppRoutingModule,
       HttpModule,
       FormsModule,
